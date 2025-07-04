@@ -24,7 +24,6 @@ ARsitektur is an innovative mobile application built with Flutter, designed to p
 | Home Page                                                                                  | Materials Page                                                                             | AR Page                                                                                    |
 | :----------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------- |
 | ![Home Page](https://placehold.co/400x300/1f2937/9ca3af?text=Home+Page)                     | ![Materials Page](https://placehold.co/400x300/1f2937/9ca3af?text=Materials+Page)           | ![AR Page](https://placehold.co/400x300/1f2937/9ca3af?text=AR+Page)                         |
-> **Note**: Replace the placeholder image URLs above with actual screenshots of your application.
 
 ## ⚙️ Getting Started
 
