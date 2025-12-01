@@ -1,16 +1,29 @@
 import 'package:arsitektur_app/screens/explanation_page.dart';
 import 'package:flutter/material.dart';
 
-// A simple data model for our educational content.
+/// A simple data model for our educational content.
+///
+/// Represents a single topic or material with a title, content description,
+/// and an associated icon.
 class Materi {
+  /// The title of the material.
   final String title;
+
+  /// The detailed content or description of the material.
   final String content;
+
+  /// The icon representing the material.
   final IconData icon;
 
+  /// Creates an instance of [Materi].
+  ///
+  /// - [title]: The title of the material.
+  /// - [content]: The content description.
+  /// - [icon]: The icon to display.
   const Materi({required this.title, required this.content, required this.icon});
 }
 
-// A list of all available materials. You can easily add more here.
+/// A list of all available materials. You can easily add more here.
 final List<Materi> materiList = [
   const Materi(
     title: 'Prinsip Dasar Arsitektur',
@@ -35,9 +48,19 @@ final List<Materi> materiList = [
 ];
 
 
+/// A page that displays a list of educational materials.
+///
+/// This widget renders a list of [Materi] items. Users can tap on an item
+/// to view more details on the [ExplanationPage].
 class MateriPage extends StatelessWidget {
+  /// Creates an instance of [MateriPage].
   const MateriPage({super.key});
 
+  /// Builds the widget tree for the materials page.
+  ///
+  /// - [context]: The build context.
+  ///
+  /// Returns a [Scaffold] widget containing the list of materials.
   @override
   Widget build(BuildContext context) {
     return Scaffold(

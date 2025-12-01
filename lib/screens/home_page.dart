@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 
+/// The home page of the application.
+///
+/// This page displays the welcome message, a hero image, and navigation
+/// buttons to the other sections of the app: Material Page and AR Page.
 class HomePage extends StatelessWidget {
+  /// Creates an instance of [HomePage].
   const HomePage({super.key});
 
+  /// Builds the widget tree for the home page.
+  ///
+  /// - [context]: The build context.
+  ///
+  /// Returns a [Scaffold] widget.
   @override
   Widget build(BuildContext context) {
     // We use a SafeArea to avoid the UI being obscured by system notches or bars.
@@ -89,7 +99,16 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // A helper widget to build the navigation buttons, reducing code repetition.
+  /// Builds a navigation button widget.
+  ///
+  /// This helper method creates a consistent button style for navigation.
+  ///
+  /// - [context]: The build context used to access theme data.
+  /// - [icon]: The icon to display on the button.
+  /// - [label]: The text label for the button.
+  /// - [onTap]: The callback function to execute when the button is tapped.
+  ///
+  /// Returns a [Widget] representing the navigation button.
   Widget _buildNavButton({
     required BuildContext context,
     required IconData icon,

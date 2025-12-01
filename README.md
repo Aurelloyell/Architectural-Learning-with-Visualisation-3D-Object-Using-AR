@@ -63,19 +63,19 @@ The project structure follows Flutter's recommended standards to maintain readab
 
 ```
 lib/
-├── main.dart               # Main entry point of the application
+├── main.dart                 # Main entry point of the application
 ├── screens/
-│   ├── home_page.dart      # UI for the home page
-│   ├── materi_page.dart    # UI for the materials list
-│   ├── explanation_page.dart # UI for material details
-│   └── ar_page.dart        # UI for the 3D model and AR view
+│   ├── home_page.dart        # UI for the home page with navigation
+│   ├── materi_page.dart      # UI for the educational materials list
+│   ├── explanation_page.dart # UI for displaying detailed material content
+│   └── ar_page.dart          # UI for the 3D model viewer and AR features
 └── ...
 assets/
-├── 3d/                     # Resources for 3D models (.glb, .gltf)
-├── icon/                   # Custom icons
-├── images/                 # Images used in the app
-└── materi/                 # Assets related to materials (if any)
-pubspec.yaml                # Project definition and dependencies
+├── 3d/                       # Resources for 3D models (.glb, .gltf)
+├── icon/                     # Custom application icons
+├── images/                   # Images used in the app (e.g., hero images)
+└── materi/                   # Assets related to educational materials
+pubspec.yaml                  # Project definition and dependencies
 ```
 
 ## 🤝 Contributing
