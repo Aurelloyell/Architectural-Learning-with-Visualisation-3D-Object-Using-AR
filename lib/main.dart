@@ -7,10 +7,6 @@ import 'package:flutter/services.dart';
 void main() {
   // Ensure that Flutter bindings are initialized before running the app.
   WidgetsFlutterBinding.ensureInitialized();
-  // Lock screen orientation to portrait mode.
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-  ]);
   runApp(const MyApp());
 }
 

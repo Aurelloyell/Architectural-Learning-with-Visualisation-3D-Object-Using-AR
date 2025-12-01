@@ -8,6 +8,20 @@ class ArPage extends StatefulWidget {
 
   @override
   State<ArPage> createState() => _ArPageState();
+
+  // Helper method exposed for testing
+  static String formatAssetName(String path) {
+    return path
+        .split('/')
+        .last
+        // *** FIX: Remove both .glb and .gltf extensions for cleaner names. ***
+        .replaceAll(RegExp(r'\.glb$', caseSensitive: false), '')
+        .replaceAll(RegExp(r'\.gltf$', caseSensitive: false), '')
+        .replaceAll('_', ' ')
+        .split(' ')
+        .map((word) => word.isNotEmpty ? word[0].toUpperCase() + word.substring(1) : '')
+        .join(' ');
+  }
 }
 
 class _ArPageState extends State<ArPage> {
@@ -52,66 +66,93 @@ class _ArPageState extends State<ArPage> {
     }
   }
 
-  // Formats asset path to a readable name.
-  String _formatAssetName(String path) {
-    return path
-        .split('/')
-        .last
-        // *** FIX: Remove both .glb and .gltf extensions for cleaner names. ***
-        .replaceAll('.glb', '')
-        .replaceAll('.gltf', '')
-        .replaceAll('_', ' ')
-        .split(' ')
-        .map((word) => word.isNotEmpty ? word[0].toUpperCase() + word.substring(1) : '')
-        .join(' ');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('AR Model Display'),
       ),
-      body: Column(
-        children: [
-          // The main 3D model viewer display area
-          Expanded(
-            child: Container(
-              color: Colors.grey[200],
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _errorMessage != null
-                      ? Center(child: Text(_errorMessage!, style: const TextStyle(color: Colors.red)))
-                      : _selectedModel == null
-                          ? const Center(child: Text('No models found in assets/3d.'))
-                          : ModelViewer(
-                              key: ValueKey(_selectedModel),
-                              src: _selectedModel!,
-                              alt: 'A 3D model of ${_formatAssetName(_selectedModel!)}',
-                              ar: true,
-                              autoRotate: true,
-                              cameraControls: true,
-                            ),
-            ),
-          ),
-          
-          // The horizontally scrolling model selector UI at the bottom
-          _buildModelSelector(),
-        ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isLandscape = constraints.maxWidth > constraints.maxHeight;
+
+          if (isLandscape) {
+            return Row(
+              children: [
+                // Model Selector on the left for landscape
+                SizedBox(
+                  width: 140,
+                  child: _buildModelSelector(isVertical: true),
+                ),
+                // Main 3D model viewer
+                Expanded(
+                  child: Container(
+                    color: Colors.grey[200],
+                    child: _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : _errorMessage != null
+                            ? Center(child: Text(_errorMessage!, style: const TextStyle(color: Colors.red)))
+                            : _selectedModel == null
+                                ? const Center(child: Text('No models found in assets/3d.'))
+                                : ModelViewer(
+                                    key: ValueKey(_selectedModel),
+                                    src: _selectedModel!,
+                                    alt: 'A 3D model of ${ArPage.formatAssetName(_selectedModel!)}',
+                                    ar: true,
+                                    autoRotate: true,
+                                    cameraControls: true,
+                                  ),
+                  ),
+                ),
+              ],
+            );
+          }
+
+          // Portrait layout
+          return Column(
+            children: [
+              // The main 3D model viewer display area
+              Expanded(
+                child: Container(
+                  color: Colors.grey[200],
+                  child: _isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : _errorMessage != null
+                          ? Center(child: Text(_errorMessage!, style: const TextStyle(color: Colors.red)))
+                          : _selectedModel == null
+                              ? const Center(child: Text('No models found in assets/3d.'))
+                              : ModelViewer(
+                                  key: ValueKey(_selectedModel),
+                                  src: _selectedModel!,
+                                  alt: 'A 3D model of ${ArPage.formatAssetName(_selectedModel!)}',
+                                  ar: true,
+                                  autoRotate: true,
+                                  cameraControls: true,
+                                ),
+                ),
+              ),
+
+              // The horizontally scrolling model selector UI at the bottom
+              SizedBox(
+                height: 150,
+                child: _buildModelSelector(),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
-  // The horizontal list to select different models.
-  Widget _buildModelSelector() {
+  // The list to select different models.
+  Widget _buildModelSelector({bool isVertical = false}) {
     if (_isLoading) {
       return const SizedBox(height: 140);
     }
     
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      padding: const EdgeInsets.all(16.0),
       color: Colors.grey[850], // Dark background like the old design
-      height: 150,
       child: _modelAssets.isEmpty
           ? const Center(
               child: Text(
@@ -119,14 +160,13 @@ class _ArPageState extends State<ArPage> {
                 style: TextStyle(color: Colors.white),
               ),
             )
-          // This ListView provides the horizontal scrolling for the models.
+          // This ListView provides the scrolling for the models.
           : ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              scrollDirection: Axis.horizontal,
+              scrollDirection: isVertical ? Axis.vertical : Axis.horizontal,
               itemCount: _modelAssets.length,
               itemBuilder: (context, index) {
                 final modelAsset = _modelAssets[index];
-                final modelName = _formatAssetName(modelAsset);
+                final modelName = ArPage.formatAssetName(modelAsset);
                 final isSelected = _selectedModel == modelAsset;
 
                 return GestureDetector(
@@ -136,8 +176,11 @@ class _ArPageState extends State<ArPage> {
                     });
                   },
                   child: Container(
-                    width: 110, // Fixed width for each item
-                    margin: const EdgeInsets.only(right: 12.0),
+                    width: isVertical ? null : 110, // Fixed width for horizontal items
+                    height: isVertical ? 110 : null, // Fixed height for vertical items
+                    margin: isVertical
+                        ? const EdgeInsets.only(bottom: 12.0)
+                        : const EdgeInsets.only(right: 12.0),
                     decoration: BoxDecoration(
                       color: isSelected ? Theme.of(context).colorScheme.primary : Colors.grey[700],
                       borderRadius: BorderRadius.circular(12),

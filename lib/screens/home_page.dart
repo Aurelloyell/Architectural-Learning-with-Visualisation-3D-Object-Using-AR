@@ -5,85 +5,161 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // We use a SafeArea to avoid the UI being obscured by system notches or bars.
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            // Aligns children to the start and end of the column.
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Header Section
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Selamat Datang',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.black54,
-                    ),
-                  ),
-                  Text(
-                    'ARsitektur',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ],
-              ),
-              
-              // Image Placeholder Section
-              Container(
-                height: 250,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(20),
-                  // You can add an image here later
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/arsitektur_image.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // child: const Center(
-                //   child: Text(
-                //     'ARsitektur Image',
-                //     style: TextStyle(color: Colors.black45, fontSize: 18),
-                //   ),
-                // ),
-              ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isLandscape = constraints.maxWidth > constraints.maxHeight;
 
-              // Navigation Buttons Section
-              Column(
+            if (isLandscape) {
+               return Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                  children: [
+                    // Left side: Header and Nav Buttons
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Selamat Datang',
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                              Text(
+                                'ARsitektur',
+                                style: TextStyle(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          _buildNavButton(
+                            context: context,
+                            icon: Icons.menu_book_rounded,
+                            label: 'Materi Page',
+                            onTap: () {
+                              Navigator.pushNamed(context, '/materi');
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          _buildNavButton(
+                            context: context,
+                            icon: Icons.view_in_ar_rounded,
+                            label: 'AR Page',
+                            onTap: () {
+                              Navigator.pushNamed(context, '/ar');
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 32),
+                    // Right side: Image
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(20),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/images/arsitektur_image.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            // Portrait Mode (Original Layout)
+            return Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                // Aligns children to the start and end of the column.
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _buildNavButton(
-                    context: context,
-                    icon: Icons.menu_book_rounded,
-                    label: 'Materi Page',
-                    onTap: () {
-                      // Navigate to the Materi page when tapped.
-                      Navigator.pushNamed(context, '/materi');
-                    },
+                  // Header Section
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Selamat Datang',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      Text(
+                        'ARsitektur',
+                        style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  _buildNavButton(
-                    context: context,
-                    icon: Icons.view_in_ar_rounded,
-                    label: 'AR Page',
-                    onTap: () {
-                      // Navigate to the AR page when tapped.
-                      Navigator.pushNamed(context, '/ar');
-                    },
+
+                  // Image Placeholder Section
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 24),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(20),
+                        // You can add an image here later
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/arsitektur_image.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Navigation Buttons Section
+                  Column(
+                    children: [
+                      _buildNavButton(
+                        context: context,
+                        icon: Icons.menu_book_rounded,
+                        label: 'Materi Page',
+                        onTap: () {
+                          // Navigate to the Materi page when tapped.
+                          Navigator.pushNamed(context, '/materi');
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      _buildNavButton(
+                        context: context,
+                        icon: Icons.view_in_ar_rounded,
+                        label: 'AR Page',
+                        onTap: () {
+                          // Navigate to the AR page when tapped.
+                          Navigator.pushNamed(context, '/ar');
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
