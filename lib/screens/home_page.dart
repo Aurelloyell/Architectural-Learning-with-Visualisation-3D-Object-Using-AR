@@ -1,114 +1,171 @@
 import 'package:flutter/material.dart';
 
-/// The home page of the application.
-///
-/// This page displays the welcome message, a hero image, and navigation
-/// buttons to the other sections of the app: Material Page and AR Page.
 class HomePage extends StatelessWidget {
-  /// Creates an instance of [HomePage].
   const HomePage({super.key});
 
-  /// Builds the widget tree for the home page.
-  ///
-  /// - [context]: The build context.
-  ///
-  /// Returns a [Scaffold] widget.
   @override
   Widget build(BuildContext context) {
-    // We use a SafeArea to avoid the UI being obscured by system notches or bars.
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            // Aligns children to the start and end of the column.
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Header Section
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Selamat Datang',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w300,
-                      color: Colors.black54,
-                    ),
-                  ),
-                  Text(
-                    'ARsitektur',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ],
-              ),
-              
-              // Image Placeholder Section
-              Container(
-                height: 250,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(20),
-                  // You can add an image here later
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/arsitektur_image.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // child: const Center(
-                //   child: Text(
-                //     'ARsitektur Image',
-                //     style: TextStyle(color: Colors.black45, fontSize: 18),
-                //   ),
-                // ),
-              ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final isLandscape = constraints.maxWidth > constraints.maxHeight;
 
-              // Navigation Buttons Section
-              Column(
+            if (isLandscape) {
+               return Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                  children: [
+                    // Left side: Header and Nav Buttons
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Selamat Datang',
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.black54,
+                                ),
+                              ),
+                              Text(
+                                'ARsitektur',
+                                style: TextStyle(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          _buildNavButton(
+                            context: context,
+                            icon: Icons.menu_book_rounded,
+                            label: 'Materi Page',
+                            onTap: () {
+                              Navigator.pushNamed(context, '/materi');
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          _buildNavButton(
+                            context: context,
+                            icon: Icons.view_in_ar_rounded,
+                            label: 'AR Page',
+                            onTap: () {
+                              Navigator.pushNamed(context, '/ar');
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 32),
+                    // Right side: Image
+                    Expanded(
+                      flex: 6,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(20),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/images/arsitektur_image.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            // Portrait Mode (Original Layout)
+            return Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                // Aligns children to the start and end of the column.
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _buildNavButton(
-                    context: context,
-                    icon: Icons.menu_book_rounded,
-                    label: 'Materi Page',
-                    onTap: () {
-                      // Navigate to the Materi page when tapped.
-                      Navigator.pushNamed(context, '/materi');
-                    },
+                  // Header Section
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Selamat Datang',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      Text(
+                        'ARsitektur',
+                        style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  _buildNavButton(
-                    context: context,
-                    icon: Icons.view_in_ar_rounded,
-                    label: 'AR Page',
-                    onTap: () {
-                      // Navigate to the AR page when tapped.
-                      Navigator.pushNamed(context, '/ar');
-                    },
+
+                  // Image Placeholder Section
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 24),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(20),
+                        // You can add an image here later
+                        image: const DecorationImage(
+                          image: AssetImage('assets/images/arsitektur_image.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Navigation Buttons Section
+                  Column(
+                    children: [
+                      _buildNavButton(
+                        context: context,
+                        icon: Icons.menu_book_rounded,
+                        label: 'Materi Page',
+                        onTap: () {
+                          // Navigate to the Materi page when tapped.
+                          Navigator.pushNamed(context, '/materi');
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      _buildNavButton(
+                        context: context,
+                        icon: Icons.view_in_ar_rounded,
+                        label: 'AR Page',
+                        onTap: () {
+                          // Navigate to the AR page when tapped.
+                          Navigator.pushNamed(context, '/ar');
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
   }
 
-  /// Builds a navigation button widget.
-  ///
-  /// This helper method creates a consistent button style for navigation.
-  ///
-  /// - [context]: The build context used to access theme data.
-  /// - [icon]: The icon to display on the button.
-  /// - [label]: The text label for the button.
-  /// - [onTap]: The callback function to execute when the button is tapped.
-  ///
-  /// Returns a [Widget] representing the navigation button.
+  // A helper widget to build the navigation buttons, reducing code repetition.
   Widget _buildNavButton({
     required BuildContext context,
     required IconData icon,
