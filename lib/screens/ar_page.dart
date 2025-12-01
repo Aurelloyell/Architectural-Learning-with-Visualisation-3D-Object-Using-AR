@@ -3,13 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
+/// A page that displays 3D models using Augmented Reality (AR).
+///
+/// This widget allows users to view and interact with 3D models of
+/// architectural structures. It supports loading models from assets
+/// and displaying them in an AR view.
 class ArPage extends StatefulWidget {
+  /// Creates an instance of [ArPage].
   const ArPage({super.key});
 
   @override
   State<ArPage> createState() => _ArPageState();
 }
 
+/// The state for [ArPage].
 class _ArPageState extends State<ArPage> {
   // Asset lists and selections
   List<String> _modelAssets = [];
@@ -19,13 +26,22 @@ class _ArPageState extends State<ArPage> {
   bool _isLoading = true;
   String? _errorMessage;
 
+  /// Initializes the state of the widget.
+  ///
+  /// This method triggers the loading of 3D model assets.
   @override
   void initState() {
     super.initState();
     _loadModelAssets();
   }
 
-  // Loads the list of 3D models from the assets folder.
+  /// Loads the list of 3D models from the assets folder.
+  ///
+  /// This method reads the asset manifest to find all files in the
+  /// `assets/3d/` directory that have `.glb` or `.gltf` extensions.
+  /// It updates the state with the list of found models.
+  ///
+  /// Returns a [Future] that completes when the assets are loaded.
   Future<void> _loadModelAssets() async {
     try {
       final manifestContent = await rootBundle.loadString('AssetManifest.json');
@@ -52,7 +68,15 @@ class _ArPageState extends State<ArPage> {
     }
   }
 
-  // Formats asset path to a readable name.
+  /// Formats the asset path to a readable name.
+  ///
+  /// This method takes the file path of a 3D model and converts it into
+  /// a human-readable title by removing extensions and underscores, and
+  /// capitalizing words.
+  ///
+  /// - [path]: The file path of the asset.
+  ///
+  /// Returns a formatted string representing the model name.
   String _formatAssetName(String path) {
     return path
         .split('/')
@@ -66,6 +90,11 @@ class _ArPageState extends State<ArPage> {
         .join(' ');
   }
 
+  /// Builds the widget tree for the AR page.
+  ///
+  /// - [context]: The build context.
+  ///
+  /// Returns a [Scaffold] containing the AR view and model selector.
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +131,12 @@ class _ArPageState extends State<ArPage> {
     );
   }
 
-  // The horizontal list to select different models.
+  /// Builds the horizontal list to select different models.
+  ///
+  /// This widget displays a list of available 3D models. Users can tap on
+  /// an item to select it for viewing.
+  ///
+  /// Returns a [Widget] containing the model selector.
   Widget _buildModelSelector() {
     if (_isLoading) {
       return const SizedBox(height: 140);
