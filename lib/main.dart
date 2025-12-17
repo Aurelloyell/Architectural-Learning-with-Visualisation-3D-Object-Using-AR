@@ -1,12 +1,16 @@
-import 'package:arsitektur_app/screens/ar_page%20backup%202.dart';
+import 'package:arsitektur_app/screens/ar_page.dart';
 import 'package:arsitektur_app/screens/home_page.dart';
 import 'package:arsitektur_app/screens/materi_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  // Ensure that Flutter bindings are initialized before running the app.
   WidgetsFlutterBinding.ensureInitialized();
+  // Lock orientation for a better start experience
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+  ));
   runApp(const MyApp());
 }
 
@@ -19,27 +23,30 @@ class MyApp extends StatelessWidget {
       title: 'ARsitektur',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.grey,
-        scaffoldBackgroundColor: const Color(0xFFF5F5F7),
+        useMaterial3: true,
         fontFamily: 'Inter',
+        scaffoldBackgroundColor: const Color(0xFFF8F9FA),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF1E293B), // Midnight Slate
+          primary: const Color(0xFF1E293B),
+          secondary: const Color(0xFFE76F51), // Terracotta Accent
+          tertiary: const Color(0xFF2A9D8F), // Muted Teal
+          surface: Colors.white,
+          background: const Color(0xFFF8F9FA),
+        ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
-          iconTheme: IconThemeData(color: Colors.black87),
+          scrolledUnderElevation: 0,
+          iconTheme: IconThemeData(color: Color(0xFF1E293B)),
           titleTextStyle: TextStyle(
-            color: Colors.black87,
+            color: Color(0xFF1E293B),
             fontSize: 20,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.5,
           ),
         ),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF4DB6AC), // Teal accent
-          brightness: Brightness.light,
-          primary: const Color(0xFF4DB6AC),
-          secondary: const Color(0xFFE0F2F1), // Lighter teal for backgrounds
-        ),
-        useMaterial3: true,
       ),
       initialRoute: '/',
       routes: {
