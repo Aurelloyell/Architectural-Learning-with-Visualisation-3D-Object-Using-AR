@@ -5,7 +5,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Modern gradient background
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -169,8 +168,8 @@ class HomePage extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/images/arsitektur_image.png',
+          Image.network(
+            'https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&q=80',
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) => Container(
               color: Colors.grey[200],
